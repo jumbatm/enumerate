@@ -15,6 +15,8 @@ class enumeratedIterator
   iterator m_iterator;
   iterator m_end;
 
+  using value_type = std::remove_reference_t<decltype(*m_iterator)>;
+
 public:
   enumeratedIterator(T &container)
     : m_iterator(container.begin()), m_end(container.end())
@@ -43,9 +45,9 @@ public:
     return m_iterator != it;
   }
 
-  auto operator*()
+  std::tuple<const size_t,  value_type&> operator*()
   {
-    return std::tie<const size_t, decltype(*m_iterator)>(m_index, *m_iterator);
+    return std::tie(m_index, *m_iterator);
   }
 };
 
