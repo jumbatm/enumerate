@@ -25,7 +25,7 @@ int main()
 {
   // Vectors.
   std::vector<int> v(SIZE, 0);
-  
+
   std::cout << "Enumerate over a vector:\n";
 
   for (auto &&[index, item] : jon::enumerate(v))
@@ -35,7 +35,7 @@ int main()
   std::cout << "\nSet it to a count from 1 -> " << SIZE << "\n";
   for (auto &&[index, item] : jon::enumerate(v))
   {
-    item = index+1;
+    item = index + 1;
   }
   print(v);
 
