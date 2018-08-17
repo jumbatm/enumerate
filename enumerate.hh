@@ -16,12 +16,12 @@ class enumeratedIterator
   iterator m_end;
 
 public:
-  enumeratedIterator(T& container)
+  enumeratedIterator(T &container)
     : m_iterator(container.begin()), m_end(container.end())
   {
   }
 
-  auto& begin()
+  auto &begin()
   {
     return *this;
   }
@@ -31,26 +31,26 @@ public:
     return m_end;
   }
 
-  enumeratedIterator<T>& operator++()
+  enumeratedIterator<T> &operator++()
   {
     ++m_iterator;
     ++m_index;
     return *this;
   }
 
-  bool operator!=(const iterator& it)
+  bool operator!=(const iterator &it)
   {
     return m_iterator != it;
   }
 
   auto operator*()
   {
-    return std::tie(m_index, *m_iterator);
+    return std::tie<const size_t, decltype(*m_iterator)>(m_index, *m_iterator);
   }
 };
 
 template <typename T>
-auto enumerate(T&& container)
+auto enumerate(T &&container)
 {
   return enumeratedIterator<T>(std::forward<T>(container));
 }
