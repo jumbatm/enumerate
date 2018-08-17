@@ -14,7 +14,8 @@ class enumeratedIterator
   using iterator = typename std::remove_reference_t<T>::iterator;
   iterator m_iterator;
   iterator m_end;
-  public:
+
+public:
   enumeratedIterator(T& container)
     : m_iterator(container.begin()), m_end(container.end())
   {
