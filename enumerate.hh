@@ -9,45 +9,51 @@ namespace jon
 template <typename T>
 struct enumeratedIterator
 {
-    size_t index = 0;
+  size_t m_index = 0;
 
-    T& m_container;
+  using iterator = typename std::remove_reference_t<T>::iterator;
+  iterator m_iterator;
+  iterator m_end;
 
-    enumeratedIterator(T& container) : m_container(container) {}
+  enumeratedIterator(T& container)
+    : m_iterator(container.begin()), m_end(container.end())
+  {
+  }
 
-    size_t internalIndex = 0;
+  size_t internalIndex = 0;
 
-    auto& begin()
-    {
-        return *this;
-    }
+  auto& begin()
+  {
+    return *this;
+  }
 
-    size_t end()
-    {
-        return m_container.size();
-    }
+  iterator end()
+  {
+    return m_end;
+  }
 
-    enumeratedIterator<T>& operator++()
-    {
-        ++index;
-        return *this;
-    }
+  enumeratedIterator<T>& operator++()
+  {
+    ++m_iterator;
+    ++m_index;
+    return *this;
+  }
 
-    bool operator!=(size_t endValue)
-    {
-        return index != endValue;
-    }
+  bool operator!=(const iterator& it)
+  {
+    return m_iterator != it;
+  }
 
-    auto operator*()
-    {
-        return std::tie(index, *(m_container.begin() + index));
-    }
+  auto operator*()
+  {
+    return std::tie(m_index, *m_iterator);
+  }
 };
 
 template <typename T>
 auto enumerate(T&& container)
 {
-    return enumeratedIterator<T>(std::forward<T>(container));
+  return enumeratedIterator<T>(std::forward<T>(container));
 }
 
 }  // namespace jon
