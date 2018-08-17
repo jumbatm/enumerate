@@ -7,20 +7,18 @@
 namespace jon
 {
 template <typename T>
-struct enumeratedIterator
+class enumeratedIterator
 {
   size_t m_index = 0;
 
   using iterator = typename std::remove_reference_t<T>::iterator;
   iterator m_iterator;
   iterator m_end;
-
+  public:
   enumeratedIterator(T& container)
     : m_iterator(container.begin()), m_end(container.end())
   {
   }
-
-  size_t internalIndex = 0;
 
   auto& begin()
   {
