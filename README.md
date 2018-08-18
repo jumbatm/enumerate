@@ -36,4 +36,4 @@ for (auto &&[index, elem] : jon::enumerate(v))
 }
 
 ```
-This works not only with vectors, but with any type that supports iterators - it's nothing but a light wrapper over a normal iterator. See `demo.c`.
+This works not only with vectors, but with any type that supports iterators - it does nothing but wrapa normal iterator. See `demo.c` for some examples.
