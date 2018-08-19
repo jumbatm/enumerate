@@ -11,11 +11,11 @@ class enumeratedIterator
 {
   size_t m_index = 0;
 
-  using iterator = typename std::remove_reference_t<T>::iterator;
+  using iterator = typename std::remove_reference<T>::type::iterator;
   iterator m_iterator;
   iterator m_end;
 
-  using value_type = std::remove_reference_t<decltype(*m_iterator)>;
+  using value_type = typename std::remove_reference<decltype(*m_iterator)>::type;
 
 public:
   enumeratedIterator(T &container)
@@ -23,7 +23,7 @@ public:
   {
   }
 
-  auto &begin()
+  enumeratedIterator<T> &begin()
   {
     return *this;
   }
@@ -45,14 +45,14 @@ public:
     return m_iterator != it;
   }
 
-  std::tuple<const size_t,  value_type&> operator*()
+  std::pair<const size_t,  value_type&> operator*()
   {
-    return std::tie(m_index, *m_iterator);
+    return { m_index, *m_iterator };
   }
 };
 
 template <typename T>
-auto enumerate(T &&container)
+enumeratedIterator<T> enumerate(T &&container)
 {
   return enumeratedIterator<T>(std::forward<T>(container));
 }
