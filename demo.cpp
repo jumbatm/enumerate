@@ -1,9 +1,12 @@
 #include <forward_list>
 #include <iostream>
+#include <queue>
 #include <random>
 #include <vector>
 
 #include "enumerate.hh"
+
+#define HAS_CPP17 (__cplusplus >= 201703L)
 
 namespace
 {
@@ -18,7 +21,8 @@ inline void print(T &&container, const char *separator = ",")
   }
   std::cout << *it << " };\n";
 }
-constexpr inline size_t SIZE = 20;
+
+constexpr size_t SIZE = 20;
 }  // namespace
 
 int main()
@@ -28,22 +32,23 @@ int main()
 
   std::cout << "Enumerate over a vector:\n";
 
-  for (auto &&[index, item] : jon::enumerate(v))
+  for (auto &&pair : jon::enumerate(v))
   {
-    std::cout << index << ": " << item << "\n";
+    std::cout << pair.first << ": " << pair.second << "\n";
   }
+
   std::cout << "\nSet it to a count from 1 -> " << SIZE << "\n";
-  for (auto &&[index, item] : jon::enumerate(v))
+  for (auto &&pair : jon::enumerate(v))
   {
-    item = index + 1;
+    pair.second = pair.first + 1;
   }
   print(v);
 
   std::cout << "\nAssign 3 to all values:\n";
-  for (auto &&[index, item] : jon::enumerate(v))
+  for (auto &&pair : jon::enumerate(v))
   {
-    item = 3;
-    std::cout << index << ": " << item << "\n";
+    pair.second = 3;
+    std::cout << pair.first << ": " << pair.second << "\n";
   }
   print(v);
 
@@ -66,13 +71,31 @@ int main()
   }
 
   std::cout << "\n\nPrint all elements divisible by 5 and what position:\n";
-  for (auto &&[index, elem] : jon::enumerate(f))
+  for (auto &&pair : jon::enumerate(f))
   {
-    if (elem % 5 == 0)
+    if (pair.first % 5 == 0)
     {
-      std::cout << "Found " << elem << " at index " << index << "\n";
+      std::cout << "Found " << pair.first << " at index " << pair.second
+                << "\n";
     }
   }
+
+#if HAS_CPP17
+  std::priority_queue<std::string> queue;
+  for (size_t i = 0; i < SIZE; ++i)
+  {
+    queue.push();
+  }
+
+  for (auto &&[index, pair] : jon::enumerate(map))
+  {
+    std::cout << index << ": "
+              << "{ " << pair.first << ", " << pair.second << " }\n";
+  }
+
+#else
+  std::cout << "Skipping C++17 demo of map.\n";
+#endif
 
   return 0;
 }
