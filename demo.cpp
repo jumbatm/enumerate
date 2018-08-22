@@ -1,6 +1,6 @@
 #include <forward_list>
 #include <iostream>
-#include <queue>
+#include <map>
 #include <random>
 #include <vector>
 
@@ -44,13 +44,15 @@ int main()
   }
   print(v);
 
-  std::cout << "\nAssign 3 to all values:\n";
-  for (auto &&pair : jon::enumerate(v))
+#if HAS_CPP17
+  std::cout << "\nUsing C++17 syntax, assign 3 to all values:\n";
+  for (auto &&[index, element] : jon::enumerate(v))
   {
-    pair.second = 3;
-    std::cout << pair.first << ": " << pair.second << "\n";
+    element = 3;
+    std::cout << index << ": " << element << "\n";
   }
   print(v);
+#endif
 
   std::cout << "\n";
 
@@ -79,12 +81,17 @@ int main()
                 << "\n";
     }
   }
-
 #if HAS_CPP17
-  std::priority_queue<std::string> queue;
-  for (size_t i = 0; i < SIZE; ++i)
+  std::cout << "\nInsert random values into a map as keys, as well as the Nth "
+               "number that was to be stored.\n";
+  std::map<size_t, size_t> map;
+
+  // Insert into a map in reverse order. Map the value to the Nth number added
+  // it was.
+  size_t nth_number_added = 0;
+  for (size_t i = SIZE; i--;)
   {
-    queue.push();
+    map[rand()] = ++nth_number_added;
   }
 
   for (auto &&[index, pair] : jon::enumerate(map))
@@ -92,9 +99,6 @@ int main()
     std::cout << index << ": "
               << "{ " << pair.first << ", " << pair.second << " }\n";
   }
-
-#else
-  std::cout << "Skipping C++17 demo of map.\n";
 #endif
 
   return 0;
