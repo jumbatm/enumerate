@@ -3,6 +3,7 @@
 
 #include <tuple>
 #include <utility>
+#include <type_traits>
 
 namespace jon
 {
@@ -15,7 +16,8 @@ class enumeratedIterator
   iterator m_iterator;
   iterator m_end;
 
-  using value_type = typename std::remove_reference<decltype(*m_iterator)>::type;
+  using value_type =
+      typename std::remove_reference<decltype(*m_iterator)>::type;
 
 public:
   enumeratedIterator(T &container)
@@ -23,12 +25,16 @@ public:
   {
   }
 
-  enumeratedIterator<T> &begin()
+  enumeratedIterator(const typename std::remove_reference<T>::type::iterator &iterator) : m_iterator(iterator)
+  {
+  }
+
+  enumeratedIterator<T> begin()
   {
     return *this;
   }
 
-  iterator end()
+  enumeratedIterator<T> end()
   {
     return m_end;
   }
@@ -45,7 +51,12 @@ public:
     return m_iterator != it;
   }
 
-  std::pair<const size_t,  value_type&> operator*()
+  operator iterator()
+  {
+    return m_iterator;
+  }
+
+  std::pair<const size_t, value_type &> operator*()
   {
     return { m_index, *m_iterator };
   }
