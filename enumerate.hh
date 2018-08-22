@@ -2,8 +2,8 @@
 #define ENUMERATE_H_INCLUDED
 
 #include <tuple>
-#include <utility>
 #include <type_traits>
+#include <utility>
 
 namespace jon
 {
@@ -25,7 +25,9 @@ public:
   {
   }
 
-  enumeratedIterator(const typename std::remove_reference<T>::type::iterator &iterator) : m_iterator(iterator)
+  enumeratedIterator(
+      const typename std::remove_reference<T>::type::iterator &iterator)
+    : m_iterator(iterator)
   {
   }
 
